@@ -1,0 +1,78 @@
+//dugme za dodavanje
+$('#dodajForm').submit(function () {
+    event.preventDefault();
+    console.log("Dodavanje");
+  
+    const $form = $(this);
+    const $input = $form.find('input, select, button, textarea');
+  
+  
+    const serijalizacija = $form.serialize();
+  
+    console.log(serijalizacija);
+  
+    $input.prop('disabled', true);
+  
+    req = $.ajax({
+      url: 'handler/dodajProizvod.php',
+      type: 'post',
+      data: serijalizacija
+    });
+  
+    req.done(function (res, textStatus, jqXHR) {
+      if (res.indexOf("Ok") != -1) {
+        alert("Dodat je nov proizvod");
+        location.reload(true);
+  
+      } else console.log("Proizvod nije dodat" + res);
+  });
+  
+    req.fail(function (jqXHR, textStatus, errorThrown) {
+      console.error('Greska: ' + textStatus, errorThrown)
+    });
+  });
+  
+  
+  //za sakrivanje i otkrivanje modala
+  $('#btn').click(function () {
+    $('#pregled').toggle();
+  });
+  
+  //kad se klikne na dugme tad se sklanja modal
+  $('#btnDodaj').submit(function () {
+    $('#myModal').modal('toggle');
+    return false;
+  });
+  
+  //za sakrivanje i otkrivanje modala
+  $('#btnIzmeni').submit(function () {
+    $('#myModal').modal('toggle');
+    return false;
+  });
+  
+  //za azuzranje vrednosti kategorijaid kad se promeni
+  $("#kategorija").change(function(){
+    var kategorijaId =  $('#kategorija').val();
+    $('#kategorijaId').val(kategorijaId);
+  
+  });
+  
+  //Edit
+  $('.btn-info').click(function () {
+  
+    const trenutni = $(this).attr('data-id2');
+    console.log(trenutni);
+    var imeProizvoda = $(this).closest('tr').children('td[data-target=imeProizvoda]').text();
+    console.log(imeProizvoda);
+    var nutritivnaVrednost = $(this).closest('tr').children('td[data-target=nutritivnaVrednost]').text();
+    var cena = $(this).closest('tr').children('td[data-target=cena]').text();
+    console.log(cena);
+    var kategorijaId = $(this).closest('tr').children('td[data-target=kategorijaId]').text();
+    console.log(kategorijaId);
+  
+  
+    $('#proizvodId').val(trenutni);
+    $('#imeProizvoda').val(imeProizvoda);
+    $('#nutritivnaVrednost').val(nutritivnaVrednost);
+    document.getElementById('kategorijaOznaceni').value = kategorijaId;
+  });
