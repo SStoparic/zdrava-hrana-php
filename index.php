@@ -26,7 +26,7 @@ if (isset($_COOKIE["admin"]))
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Biospajz</title>
+    <title>FitGreens</title>
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link href="css/style.css" rel="stylesheet">
@@ -67,5 +67,44 @@ if (isset($_COOKIE["admin"]))
             </div>
         </div>
     </div>
+
+    <div class="container pt" style="margin-top:40px; margin-bottom: 300px; ">
+    <div id="searchDiv" >
+        <label for="pretraga"style="color:#7b9d70 ;font-weight:400px ;font-size:22px; padding-bottom:20px">Pretraga proizvoda na osnovu kategorije</label>
+        <select id="pretraga" onchange="pretraga()" class="form-control" style=" font-size:20px ;" >
+            <?php
+            $rez = $conn->query("SELECT * from kategorija");
+
+            while ($red = $rez->fetch_assoc()) {
+            ?>
+                <option 
+                value="<?php echo $red['kategorijaId'] ?>"> <?php echo $red['imeKategorije'] ?></option>
+            <?php   }
+            ?>
+        </select>
+    </div>
+
+    <div id="podaciPretraga"style="font-size:18px ; margin-top:-80px" ></div>
+    </div>
+
+
+
+    <script>
+        function pretraga() {
+            $.ajax({
+                url: "handler/pretragaProizvoda.php",
+                data: {
+                    kategorijaId: $("#pretraga").val()
+                },
+                success: function(html) {
+                    $("#podaciPretraga").html(html);
+                }
+            })
+        }
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
