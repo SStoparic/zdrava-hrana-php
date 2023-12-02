@@ -76,3 +76,33 @@ $('#dodajForm').submit(function () {
     $('#nutritivnaVrednost').val(nutritivnaVrednost);
     document.getElementById('kategorijaOznaceni').value = kategorijaId;
   });
+
+  //Brisanje proizvoda
+  $('.btn-danger').click(function () {
+    console.log("Brisanje");
+    const trenutni = $(this).attr('data-id1');  
+    console.log('ID proizvoda koji se brise je: ' + trenutni);
+    req = $.ajax({
+      url: 'handler/obrisiProizvod.php',
+      type: 'post',
+      data: { 'id': trenutni }
+    });
+  
+    req.done(function (res, textStatus, jqXHR) {
+      if (res.indexOf("Ok") != -1) {
+        $(this).closest('tr').remove();
+        alert('Uspesno obrisan proizvod');
+        location.reload(true);
+        console.log('Obrisana');
+      } else {
+        console.log("Nije obrisan proizvod" + res);
+        alert("Nije obrisan proizvod ");
+  
+      }
+    });
+
+
+  
+  });
+
+  
